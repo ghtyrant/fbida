@@ -138,6 +138,7 @@ int timeout;
 int backup;
 int preserve;
 int read_ahead;
+int oneshot;
 int editable;
 int blend_msecs;
 int perfmon = 0;
@@ -873,6 +874,9 @@ svga_show(struct flist *f, struct flist *prev,
 		status_update(desc, info);
 		shadow_render();
 	    }
+
+	    if (oneshot)
+		return KEY_Q;
 	}
         if (switch_last != fb_switch_state) {
 	    console_switch();
@@ -1401,7 +1405,10 @@ static void flist_img_load(struct flist *f, int prefetch)
 static void cleanup_and_exit(int code)
 {
     shadow_fini();
-    fb_clear_screen();
+
+    if (!oneshot)
+	fb_clear_screen();
+
     tty_restore();
     fb_cleanup();
     flist_print_tagged(stdout);
@@ -1457,6 +1464,7 @@ main(int argc, char *argv[])
     backup      = GET_BACKUP();
     preserve    = GET_PRESERVE();
     read_ahead  = GET_READ_AHEAD();
+    oneshot	= GET_ONESHOT();
 
     max_mem_mb  = GET_CACHE_MEM();
     blend_msecs = GET_BLEND_MSECS();
@@ -1469,6 +1477,7 @@ main(int argc, char *argv[])
 
     fontname    = cfg_get_str(O_FONT);
     filelist    = cfg_get_str(O_FILE_LIST);
+
 
     if (filelist)
 	flist_add_list(filelist);

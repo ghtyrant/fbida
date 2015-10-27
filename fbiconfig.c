@@ -111,6 +111,11 @@ struct cfg_cmdline fbi_cfg[] = {
 	.option   = { O_READ_AHEAD },
 	.yesno    = 1,
 	.desc     = "read ahead images into cache",
+    },{
+	.cmdline  = "oneshot",
+	.option   = { O_ONESHOT },
+	.yesno    = 1,
+	.desc     = "copy image to framebuffer, then exit",
 
     },{
 	.cmdline  = "cachemem",

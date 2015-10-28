@@ -1407,11 +1407,12 @@ static void cleanup_and_exit(int code)
     shadow_fini();
 
     if (!oneshot)
+    {
 	fb_clear_screen();
-
-    tty_restore();
-    fb_cleanup();
-    flist_print_tagged(stdout);
+	tty_restore();
+	fb_cleanup();
+	flist_print_tagged(stdout);
+    }
     exit(code);
 }
 
@@ -1477,7 +1478,6 @@ main(int argc, char *argv[])
 
     fontname    = cfg_get_str(O_FONT);
     filelist    = cfg_get_str(O_FILE_LIST);
-
 
     if (filelist)
 	flist_add_list(filelist);
